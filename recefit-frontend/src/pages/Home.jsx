@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import GoalCard from "../components/GoalCard"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
 
 const goals = [
     { id: 'volumen', label: 'Volumen', icon: '🏋️' },
@@ -16,6 +18,8 @@ export default function Home() {
     }
 
     return (
+        <div>
+        <div> <Navbar /> </div>
         <div className="home">
             <h1>¿Cuál es tu objetivo?</h1>
             <p>Encontrá recetas pensadas para tu alimentación</p>
@@ -28,6 +32,8 @@ export default function Home() {
                     />
                 ))}
             </div>
+        </div>
+        <div><Footer /></div>
         </div>
     )
 }

@@ -7,3 +7,6 @@ export const getRecipes = (goal, intolerances = '', vegetarian = false) => {
         params: { goal, intolerances, vegetarian}
     })
 }
+export const getRecipeById = (id) => {
+    return axios.get(`${BASE_URL}/recipes/${id}`)
+}
