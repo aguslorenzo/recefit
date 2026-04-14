@@ -80,4 +80,41 @@ public class RecipeService {
             throw new RuntimeException("Error al llamar a Spoonacular: " + e.getMessage());
         }
     }
+
+    public Recipe getRecipeById(int id) {
+        String url = "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=" + apiKey + "&includeNutrition=true";
+        try {
+           String response = restTemplate.getForObject(url, String.class);
+           JsonNode node = objectMapper.readTree(response);
+
+           Recipe recipe = new Recipe();
+           recipe.setId(node.path("id").asInt());
+           recipe.setTitle(node.path("title").asText());
+           recipe.setImage(node.path("image").asText());
+
+           JsonNode nutrients = node.path("nutrition").path("nutrients");
+           for (JsonNode nutrient : nutrients) {
+               String name = nutrient.path("name").asText();
+               double amount = nutrient.path("amount").asDouble();
+               switch (name) {
+                   case "Calories" -> recipe.setCalories((int) amount);
+                   case "Protein" -> recipe.setProtein(amount);
+                   case "Carbohydrates" -> recipe.setCarbs(amount);
+                   case "Fat" -> recipe.setFat(amount);
+               }
+           }
+
+           List<String> ingredients = new ArrayList<>();
+           for (JsonNode ing : node.path("extendedIngredients")) {
+            ingredients.add(ing.path("original").asText());
+           }
+           recipe.setIngredients(ingredients);
+
+           recipe.setInstructions(node.path("instructions").asText());
+           
+           return recipe;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener receta: " + e.getMessage());
+        }
+    }
 }

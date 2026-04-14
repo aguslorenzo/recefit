@@ -1,5 +1,7 @@
 package com.recefit.recefit_backend.model;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -11,4 +13,6 @@ public class Recipe {
     private double protein;
     private double carbs;
     private double fat;
+    private String instructions;
+    private List<String> ingredients;
 }
